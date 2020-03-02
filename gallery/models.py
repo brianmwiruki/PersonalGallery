@@ -9,3 +9,6 @@ class Picture(models.Model):
     tags = models.ManyToManyField(tags)
     pub_date = models.DateTimeField(auto_now_add = True)
     article_image = models.ImageField(upload_to = 'articles/',default = 'image' )
+
+    def save_picture(self):
+        self.save()
