@@ -1,71 +1,45 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"> {% if title %}
-    <title>{{title}}</title>
-    {% else %}
-    <title> Gallery4Real </title>
-    {% endif %} {% block styles %}
+{%extends 'base.html'%} {% block content %}
 
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <!-- Bootstrap core CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/css/mdb.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/art.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css"> {% endblock %}
+<!-- <div class="container"> -->
+<div class="row">
+    {% if art_images%} {% else %}
+    <h2 class="text-center text-white"> Found 0 images. {{message}}</h2>
+    {% endif %}
 
-</head>
+</div>
 
-<body id="particles-js">
-    <div class="container-fluid">
+<div class="row">
+    {% for image in art_images %}
+    <div class="col-md-4 col-sm-6 col-xs-12  item" style="padding: 1%;">
+        <div class="view overlay text-white ">
+            <a>
+                <img class="img-thumbnail" src="{{image.image_path.url}}" class="img-fluid " alt="">
+                <div class="description mask  rgba-black-strong " style="margin: 0 auto;padding: 3%;">
 
-        {% include "navbar.html" %}
+                    <p class="description-heading"> TITLE : {{image.image_name}}</p>
+                    <span> DESCRIPTION :
+                        <p class="description-body"> {{image.image_description}} </p></span>
 
 
-        <div class="container" style="margin-bottom: 2%;">
-            <div class="col-md-1"></div>
-            <div class="row text-center">
-                <div class="col-md-10">
-                    <h4 class="display-4 text-center font-weight-bold" style="color:#a1887f;">Welcome To Gallery4Real </h2>
-                </div>
-                <div class="col-md-1"></div>
+                    <p class="white-text description-body "> <span class="badge"> <i
+                                class="fas fa-map-marker-alt"></i>&nbsp; {{image.image_location}}</span>
+
+                    </p>
+
+
+                    <p> <small class="ml-45"> {{image.post_date | timesince}} ago</small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span id="image{{image.id}}" hidden>{{image.image_path.url}}</span>
+                        <a onclick="copyToClipboard('image{{image.id}}')" class=" text-white"><i class="far fa-copy">
+                                <small> Copy Link</small></i></a>
+
+                    </p>
+
+
+            </a>
             </div>
         </div>
 
-
-
-        {% block content %}{% endblock %}
-
     </div>
-
-    {% block scripts %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- JQuery -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.10/js/mdb.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
-    <script src="{%static 'js/art.js'%}"></script>
-
-    <script type="text/javascript" src="{%static 'js/particles.js'%}"></script>
-    <script src="{%static 'js/app.js'%}"></script>
-
-    {% endblock %}
-
-</body>
-
-</html
+    {% endfor %} {% endblock %}

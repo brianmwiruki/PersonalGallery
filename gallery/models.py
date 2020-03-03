@@ -1,35 +1,71 @@
 from django.db import models
-import datetime as dt
 
 # Create your models here.
-class Editor(models.Model):
-    first_name = models.CharField(max_length = 30)
-    last_name = models.CharField(max_length = 30)
-    email = models.EmailField()
-    phone_number = models.CharField(max_length = 10, blank = True)
-
-    def __str__(self):  
-        
-        return self.first_name
+class Category(models.Model):
+    category_name = models.CharField(max_length=40, unique=True)
     
-    def save_editor(self):
+    
+    def __str__(self):
+        return self.category_name
+
+
+    def save_category(self):
         self.save()
         
-    class Meta:
-        ordering = ['first_name']
-
-class tags(models.Model):
-    name = models.CharField(max_length = 30)
-
+class Location(models.Model):
+    location_name = models.CharField(max_length=30, unique=True)
+    
+    
     def __str__(self):
-        return self.name 
+            return self.location_name
 
-class Picture(models.Model):
-    title = models.CharField(max_length = 60)
-    post = models.TextField()
-    editor = models.ForeignKey(Editor, on_delete = models.CASCADE)
-    tags = models.ManyToManyField(tags)
-    pub_date = models.DateTimeField(auto_now_add = True)
-    picture_image = models.ImageField(upload_to = 'pictures/',default = 'image' )
 
- 
+    def save_location(self):
+        self.save()
+
+
+
+
+class Image(models.Model):
+    image_name = models.CharField(max_length =30)
+    image_description = models.TextField()
+    image_path = models.ImageField(upload_to = 'gallery/')
+    image_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image_location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    post_date = models.DateTimeField(auto_now_add=True,null=True)
+
+
+    
+    def __str__(self):
+        return self.image_name
+
+    def save_image(self):
+        self.save()
+    def delete_image(self):
+        self.delete()
+
+    @classmethod
+    def search_by_category(cls,search_term):
+        search_result = cls.objects.filter(image_category__category_name__icontains=search_term)
+        return search_result
+
+    @classmethod
+    def retrieve_all(cls):
+        all_objects = Image.objects.all()
+        for item in all_objects:
+            return item;
+
+    @classmethod
+    def get_image_by_id(cls,incoming_id):
+        image_result = cls.objects.get(id=incoming_id)
+        return image_result
+
+    @classmethod
+    def update_image(cls,current_value,new_value):
+        obtained_object = Image.objects.filter(image_name=current_value).update(image_name=new_value)
+        return obtained_object
+    
+    @classmethod
+    def obtain_by_location(cls,location):
+        obtained_location = cls.objects.filter(image_location__location_name__icontains=location)
+        return obtained_location
