@@ -1,2 +1,59 @@
-class Article(models.Model): title = models.CharField(max_length = 60) post = models.TextField() editor = models.ForeignKey(Editor, on_delete = models.CASCADE) tags = models.ManyToManyField(tags) pub_date = models.DateTimeField(auto_now_add = True) article_image
-= models.ImageField(upload_to = 'articles/',default = 'image' )
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <!--Navbar-->
+    <nav class="pl-5 pr-5 navbar navbar-expand-lg navbar-dark sticky-top">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand font-weight-bold" href="{% url 'art' %}"> smaTIQS </a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="basicExampleNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link bg bg-transparent" href="{% url 'art' %}">FEEDS<span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for cat in categories %}
+                        <a class="dropdown-item text-white" href="/category/{{cat.category_name}}">{{cat.category_name}}</a>
+                        <div class="dropdown-divider"></div>
+                        {% endfor %}
+                    </div>
+                </li>
+
+            </ul>
+
+            <form class="form-inline md-form my-1 my-lg-0" action="{% url 'search_results' %}" method="GET">
+                <input class="form-control mr-sm-2 " type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn " type="submit">
+                    <i class="fas fa-search fa-2x text-white"></i>
+                </button>
+            </form>
+        </div>
+        <!-- Collapsible content -->
+    </nav>
+    <!-- /.Navbar-->
+
+
+</body>
+
+</html>
