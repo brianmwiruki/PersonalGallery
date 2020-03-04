@@ -38,11 +38,7 @@ STATICFILES_DIRS = (
 SECRET_KEY = '$#e8gvy+sv0bv81sj!a5tx%^%lqm665638qal6otj(d4(zj0p('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
+DEBUG = False
 # Application definition
 
 INSTALLED_APPS = [
